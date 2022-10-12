@@ -1,7 +1,7 @@
 import React from "react"
 import { Kanban } from "types/kanban"
 import { useTasks } from "utils/task"
-import { useTaskTypes } from "utils/task-types"
+import { useTaskTypes } from "utils/task-type"
 import { useTasksSearchParams } from "./util"
 import taskIcon from "assets/task.svg"
 import bugIcon from "assets/bug.svg"
