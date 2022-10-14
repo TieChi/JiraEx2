@@ -28,17 +28,28 @@ export const useAddTask = (queryKey: QueryKey) => {
   );
 };
 
-// export const useEditProject = (queryKey: QueryKey) => {
-//   const client = useHttp();
-//   return useMutation(
-//     (params: Partial<Project>) =>
-//       client(`projects/${params.id}`, {
-//         method: "PATCH",
-//         data: params,
-//       }),
-//     useEditConfig(queryKey)
-//   );
-// };
+export const useTask = (id?: number) => {
+  const client = useHttp();
+  return useQuery<Task>(
+    ["task", { id }],
+    () => client(`tasks/${id}`),
+    {
+      enabled: Boolean(id),
+    }
+  );
+};
+
+export const useEditTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation(
+    (params: Partial<Task>) =>
+      client(`tasks/${params.id}`, {
+        method: "PATCH",
+        data: params,
+      }),
+    useEditConfig(queryKey)
+  );
+};
 
 
 // export const useDeleteProject = (queryKey: QueryKey) => {
@@ -53,13 +64,3 @@ export const useAddTask = (queryKey: QueryKey) => {
 //   );
 // };
 
-// export const useProject = (id?: number) => {
-//   const client = useHttp();
-//   return useQuery<Project>(
-//     ["project", { id }],
-//     () => client(`projects/${id}`),
-//     {
-//       enabled: Boolean(id),
-//     }
-//   );
-// };
