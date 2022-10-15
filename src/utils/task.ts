@@ -15,6 +15,17 @@ export const useTasks = (param?: Partial<Task>) => {
   );
 };
 
+export const useTask = (id?: number) => {
+  const client = useHttp();
+  return useQuery<Task>(
+    ["task", { id }],
+    () => client(`tasks/${id}`),
+    {
+      enabled: Boolean(id),
+    }
+  );
+};
+
 export const useAddTask = (queryKey: QueryKey) => {
   const client = useHttp();
 
@@ -25,17 +36,6 @@ export const useAddTask = (queryKey: QueryKey) => {
         method: "POST",
       }),
     useAddConfig(queryKey)
-  );
-};
-
-export const useTask = (id?: number) => {
-  const client = useHttp();
-  return useQuery<Task>(
-    ["task", { id }],
-    () => client(`tasks/${id}`),
-    {
-      enabled: Boolean(id),
-    }
   );
 };
 
@@ -51,16 +51,15 @@ export const useEditTask = (queryKey: QueryKey) => {
   );
 };
 
+export const useDeleteTask = (queryKey: QueryKey) => {
+  const client = useHttp();
 
-// export const useDeleteProject = (queryKey: QueryKey) => {
-//   const client = useHttp();
-
-//   return useMutation(
-//     ({ id }: { id: number }) =>
-//       client(`projects/${id}`, {
-//         method: "DELETE",
-//       }),
-//     useDeleteConfig(queryKey)
-//   );
-// };
+  return useMutation(
+    ({ id }: { id: number }) =>
+      client(`tasks/${id}`, {
+        method: "DELETE",
+      }),
+    useDeleteConfig(queryKey)
+  );
+};
 
