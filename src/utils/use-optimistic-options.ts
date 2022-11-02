@@ -4,7 +4,6 @@ export const useConfig = (
   queryKey: QueryKey,
   callback: (target: any, old?: any[]) => any[]
 ) => {
-
   const queryClient = useQueryClient();
   return {
     onSuccess: () => queryClient.invalidateQueries(queryKey),
@@ -37,3 +36,6 @@ export const useEditConfig = (queryKey: QueryKey) =>
   );
 export const useAddConfig = (queryKey: QueryKey) =>
   useConfig(queryKey, (target, old) => (old ? [...old, target] : []));
+
+export const useReorderConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => old || []);

@@ -5,6 +5,7 @@ import {
   useAddConfig,
   useDeleteConfig,
   useEditConfig,
+  useReorderConfig,
 } from "utils/use-optimistic-options";
 
 export const useKanbans = (param?: Partial<Kanban>) => {
@@ -28,18 +29,6 @@ export const useAddKanban = (queryKey: QueryKey) => {
   );
 };
 
-// export const useEditProject = (queryKey: QueryKey) => {
-//   const client = useHttp();
-//   return useMutation(
-//     (params: Partial<Project>) =>
-//       client(`projects/${params.id}`, {
-//         method: "PATCH",
-//         data: params,
-//       }),
-//     useEditConfig(queryKey)
-//   );
-// };
-
 export const useDeleteKanban = (queryKey: QueryKey) => {
   const client = useHttp();
 
@@ -52,13 +41,23 @@ export const useDeleteKanban = (queryKey: QueryKey) => {
   );
 };
 
-// export const useProject = (id?: number) => {
-//   const client = useHttp();
-//   return useQuery<Project>(
-//     ["project", { id }],
-//     () => client(`projects/${id}`),
-//     {
-//       enabled: Boolean(id),
-//     }
-//   );
-// };
+export interface SortProps {
+  // 要重新排序的 item
+  fromId: number;
+  // 目标 item
+  referenceId: number;
+  // 放在目标item的前还是后
+  type: "before" | "after";
+  fromKanbanId?: number;
+  toKanbanId?: number;
+}
+
+export const useReorderKanban = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation((params: SortProps) => {
+    return client("kanbans/reorder", {
+      data: params,
+      method: "POST",
+    });
+  }, useReorderConfig(queryKey));
+};
